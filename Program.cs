@@ -29,7 +29,10 @@ if (!string.IsNullOrEmpty(destPath))
 }
 
 // Reserve lines
-var origin = new Vector2Int(0, Console.CursorTop);
+Console.WriteLine();
+Console.WriteLine();
+Console.WriteLine();
+var origin = new Vector2Int(0, Console.CursorTop - 3);
 var position0 = new Vector2Int(origin.x, origin.y + 0);
 var position1 = new Vector2Int(origin.x, origin.y + 1);
 var position2 = new Vector2Int(origin.x, origin.y + 2);
@@ -54,9 +57,6 @@ void HandleCancelKey(object sender, ConsoleCancelEventArgs args)
 }
 
 // Initialize screen
-Console.WriteLine();
-Console.WriteLine();
-Console.WriteLine();
 Console.SetCursorPosition(origin.x, origin.y);
 fields[0].Draw(true);
 fields[1].Draw(false);
