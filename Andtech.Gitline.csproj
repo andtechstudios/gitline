@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<PackageId>Andtech.Gitline</PackageId>
+		<RepositoryUrl>https://github.com/andtechstudios/gitline</RepositoryUrl>
+		<Copyright>"© $(CompanyName) $([System.DateTime]::Now.ToString(`yyyy`))"</Copyright>
+		<TargetFrameworks>net7.0;net6.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Configurations>Debug;Release;Linux</Configurations>
+	</PropertyGroup>
+
+	<!-- dotnet-tool -->
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<ToolCommandName>gitline</ToolCommandName>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+	<Choose>
+		<When Condition=" '$(Configuration)'=='Release' ">
+			<PropertyGroup>
+				<PackAsTool>true</PackAsTool>
+			</PropertyGroup>
+		</When>
+	</Choose>
+
+	<!-- Linux development -->
+	<Choose>
+		<When Condition=" '$(Configuration)'=='Linux' ">
+			<PropertyGroup>
+				<RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+			</PropertyGroup>
+		</When>
+	</Choose>
+</Project>
+
