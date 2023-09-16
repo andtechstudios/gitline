@@ -38,9 +38,9 @@ var position1 = new Vector2Int(origin.x, origin.y + 1);
 var position2 = new Vector2Int(origin.x, origin.y + 2);
 var fields = new Field[]
 {
-	new Field(lines[0], "> ", position0),
-	new Field(lines[1], "> ", position1),
-	new Field(lines[2], "> ", position2),
+	new Field(lines[0], "Subject   ", position0),
+	new Field(lines[1], "Body      ", position1),
+	new Field(lines[2], "Footer    ", position2),
 };
 
 // Begin input loop
@@ -52,7 +52,7 @@ void HandleCancelKey(object sender, ConsoleCancelEventArgs args)
 		File.WriteAllText(destPath, string.Empty);
 	}
 
-	Console.SetCursorPosition(origin.x, Math.Max(0, origin.y + 3));
+	Console.SetCursorPosition(origin.x, origin.y);
 	Environment.Exit(0);
 }
 
@@ -344,16 +344,21 @@ class Printer
 
 	public void Draw(int cursor, string text, bool isHighlighted)
 	{
-		var indent = bullet.Length;
-		text = text.PadRight(Console.WindowWidth - indent);
+		var margin = bullet.Length + 1;
+		var bull = bullet;
+		text = text.PadRight(Console.WindowWidth - margin);
 		if (isHighlighted)
 		{
-			text = $"\x1b[40m{text}\x1b[0m";
+			bull = $"\x1b[40m{bull}\x1b[0m ";
+		}
+		else
+		{
+			bull = $"{bull} ";
 		}
 
 		Console.SetCursorPosition(origin.x, origin.y);
-		Console.Write(bullet + text);
-		Console.SetCursorPosition(origin.x + indent + cursor, origin.y);
+		Console.Write(bull + text);
+		Console.SetCursorPosition(origin.x + margin + cursor, origin.y);
 	}
 }
 #endregion
