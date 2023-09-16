@@ -78,7 +78,11 @@ do
 while (true);
 
 // Write content
-var content = string.Join("\n\n", fields.Select(x => x.Value).Where(x => !string.IsNullOrEmpty(x)));
+var content = string.Join("\n\n",
+	fields
+		.Select(x => x.Value)
+		.Where(x => !string.IsNullOrEmpty(x))
+);
 if (string.IsNullOrEmpty(destPath))
 {
 	Console.WriteLine(content);
