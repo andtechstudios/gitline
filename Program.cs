@@ -29,7 +29,7 @@ if (!string.IsNullOrEmpty(destPath))
 }
 
 // Reserve lines
-var origin = new Vector2Int(Console.CursorLeft, Console.CursorTop);
+var origin = new Vector2Int(0, Console.CursorTop);
 var position0 = new Vector2Int(origin.x, origin.y + 0);
 var position1 = new Vector2Int(origin.x, origin.y + 1);
 var position2 = new Vector2Int(origin.x, origin.y + 2);
