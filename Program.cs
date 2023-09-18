@@ -38,9 +38,9 @@ var position1 = new Vector2Int(origin.x, origin.y + 1);
 var position2 = new Vector2Int(origin.x, origin.y + 2);
 var fields = new Field[]
 {
-	new Field(lines[0], "Subject   ", position0),
-	new Field(lines[1], "Body      ", position1),
-	new Field(lines[2], "Footer    ", position2),
+	new Field(lines[0], "Subject", position0),
+	new Field(lines[1], "   Body", position1),
+	new Field(lines[2], " Footer", position2),
 };
 
 // Begin input loop
@@ -52,7 +52,7 @@ void HandleCancelKey(object sender, ConsoleCancelEventArgs args)
 		File.WriteAllText(destPath, string.Empty);
 	}
 
-	Console.SetCursorPosition(origin.x, origin.y);
+	RestoreConsole();
 	Environment.Exit(0);
 }
 
@@ -78,6 +78,8 @@ do
 while (true);
 
 // Write content
+RestoreConsole();
+
 var content = string.Join("\n\n",
 	fields
 		.Select(x => x.Value)
@@ -91,11 +93,13 @@ else
 {
 	File.WriteAllText(destPath, content);
 }
-RestoreConsole();
 
 #region helper methods
 void RestoreConsole()
 {
+	fields[0].Clear();
+	fields[1].Clear();
+	fields[2].Clear();
 	Console.SetCursorPosition(origin.x, origin.y);
 }
 #endregion
@@ -233,10 +237,14 @@ class Field
 		}
 		else
 		{
-			Console.ForegroundColor = ConsoleColor.DarkGray;
 			printer.Draw(editor.Position, editor.ToString(), false);
 		}
 		Console.ResetColor();
+	}
+
+	public void Clear()
+	{
+		printer.Clear();
 	}
 
 	public void Run()
@@ -348,21 +356,48 @@ class Printer
 
 	public void Draw(int cursor, string text, bool isHighlighted)
 	{
-		var margin = bullet.Length + 1;
+		var margin = bullet.Length + 1 + 2;
 		var bull = bullet;
-		text = text.PadRight(Console.WindowWidth - margin);
+
 		if (isHighlighted)
 		{
-			bull = $"\x1b[40m{bull}\x1b[0m ";
+			// Black background
+			bull = $"  \x1b[90m{bull}\x1b[0m ";
 		}
 		else
 		{
-			bull = $"{bull} ";
+			bull = $"  \x1b[30m{bull}\x1b[0m ";
 		}
+
+		var m = 72;
+		var n = text.Length;
+
+		var substring = text.Substring(0, Math.Min(m, n)).PadRight(m);
+		var remaining = text.Substring(Math.Min(m, n));
+		// Red overflow
+		remaining = $"\x1b[91m{remaining}\x1b[0m";
+		// Underline
+		if (isHighlighted)
+		{
+			text = $"\x1b[40m{substring}\x1b[0m" + remaining;
+		}
+		else
+		{
+
+		}
+		text = text.PadRight(Console.WindowWidth - margin);
 
 		Console.SetCursorPosition(origin.x, origin.y);
 		Console.Write(bull + text);
 		Console.SetCursorPosition(origin.x + margin + cursor, origin.y);
+	}
+
+	public void Clear()
+	{
+		var text = string.Empty.PadRight(Console.WindowWidth);
+
+		Console.SetCursorPosition(origin.x, origin.y);
+		Console.Write(text);
 	}
 }
 #endregion
